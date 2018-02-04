@@ -19,8 +19,6 @@ CRGB leds[NUM_LEDS];
 //----------------------------------------------------
 
 void setup() {
-  
-  // put your setup code here, to run once:
   #if defined(DEBUG)
     Serial.begin(115200);
     while (!Serial) { delay(1);}
@@ -30,18 +28,27 @@ void setup() {
   setupBLE();
   
   FastLED.addLeds<WS2811, DATA_PIN>(leds, NUM_LEDS);
+  blackout(0);
+}
+
+void showColor(int delayTime,int red, int green, int blue){
+  delay(delayTime); 
+  for(int i = 0; i < NUM_LEDS; i++) { 
+    leds[i] = CRGB(red,green,blue);
+  }
+  FastLED.show();
+}
+
+void blackout(int delayTime) {
+  delay(delayTime); 
+  for(int i = 0; i < NUM_LEDS; i++) { 
+    leds[i] = CRGB::Black;
+  }
+  FastLED.show();
 }
 
 void loop() { 
-//        for(int i = 0; i < NUM_LEDS; i++) { 
-//          leds[i] = CRGB::DeepSkyBlue;
-//        }
-//        FastLED.show();
-//        delay(1000); 
+  BLELoop();
+}
 
-        for(int i = 0; i < NUM_LEDS; i++) { 
-          leds[i] = CRGB::Black;
-        }
-        FastLED.show();
-        delay(1000); 
-    }
+
