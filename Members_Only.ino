@@ -29,6 +29,7 @@ void setup() {
   
   FastLED.addLeds<WS2811, DATA_PIN>(leds, NUM_LEDS);
   blackout(0);
+  setupGradientMode();
 }
 
 void showColor(int delayTime,int red, int green, int blue){
