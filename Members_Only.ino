@@ -17,6 +17,17 @@
 //----------------------------------------------------
 CRGB leds[NUM_LEDS];
 //----------------------------------------------------
+CRGBPalette16 gradPal;
+
+DEFINE_GRADIENT_PALETTE( heatmap_gp ) {
+    0,   255,128,  0,
+  128,   255,  0,100,
+  200,   255,  0,255,
+  255,   255,128,  0 };
+
+
+int gradPos = 0;
+float brightness = 0;
 
 void setup() {
   #if defined(DEBUG)
@@ -30,6 +41,8 @@ void setup() {
   FastLED.addLeds<WS2811, DATA_PIN>(leds, NUM_LEDS);
   blackout(0);
   setupGradientMode();
+  gradPal = heatmap_gp;
+  
 }
 
 void showColor(int delayTime,int red, int green, int blue){
@@ -50,6 +63,18 @@ void blackout(int delayTime) {
 
 void loop() { 
   BLELoop();
+  FastLED.setBrightness(brightness);
+  if(brightness < 255){
+    brightness += 0.05;
+  }
+  DEBUG_PRINT_LN(brightness);
+  fill_solid(leds,NUM_LEDS,ColorFromPalette( gradPal, gradPos));
+  gradPos++;
+  FastLED.show();
+  if(gradPos > 255){
+    gradPos = 0;
+  }
+  
 }
 
 
